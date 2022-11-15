@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+group 'com.epam.esm'
+version '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.7.5'
+
+    implementation project(':model')
+}
