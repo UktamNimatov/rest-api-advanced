@@ -1,6 +1,9 @@
 package com.epam.esm.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
@@ -9,6 +12,7 @@ import javax.persistence.Entity;
 
 @Entity
 @Table(name = "tags")
+@JsonIgnoreProperties("giftCertificateList")
 public class Tag extends com.epam.esm.entity.Entity {
 
     private static final long serialVersionUID = 1L;
@@ -66,7 +70,6 @@ public class Tag extends com.epam.esm.entity.Entity {
     public String toString() {
         return new StringJoiner(", ", Tag.class.getSimpleName() + "[", "]")
                 .add("name='" + name + "'")
-                .add("giftCertificateList=" + giftCertificateList)
                 .toString();
     }
 }

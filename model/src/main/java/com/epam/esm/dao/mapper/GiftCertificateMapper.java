@@ -43,7 +43,7 @@ public class GiftCertificateMapper implements EntityMapper<GiftCertificate> {
                 .toLocalDateTime().atZone(ZoneOffset.UTC)
                         .format(DateTimeFormatter.ISO_INSTANT));
             }
-            List<Tag> tagList = tagDao.findTagsOfCertificate(giftCertificate.getId(), null, null);
+            List<Tag> tagList = tagDao.findTagsOfCertificate(giftCertificate.getId(), null);
             giftCertificate.setTagList(tagList);
 
             return Optional.of(giftCertificate);

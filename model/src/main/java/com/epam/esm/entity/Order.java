@@ -1,5 +1,7 @@
 package com.epam.esm.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.persistence.Entity;
 import java.util.List;
@@ -26,6 +28,7 @@ public class Order extends com.epam.esm.entity.Entity {
     @JoinTable(name = "order_cerficates",
             joinColumns = {@JoinColumn(name = "order_id")},
             inverseJoinColumns = {@JoinColumn(name = "gift_certificate_id")})
+    @JsonIgnoreProperties("orderList")
     private List<GiftCertificate> giftCertificateList;
 
     public Order() {

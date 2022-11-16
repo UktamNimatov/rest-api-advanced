@@ -13,8 +13,7 @@ import java.util.Optional;
 
 public interface TagDao<T> extends EntityDao<Tag> {
 
-    List<T> findTagsOfCertificate(long certificateId, @Nullable Map<String, String> sortingParameters,
-                                  Pageable pageable) throws DaoException;
+    List<T> findTagsOfCertificate(long certificateId, Pageable pageable) throws DaoException;
 
     Optional<Tag> findMostWidelyUsedTagOfUser(long userId) throws DaoException;
 

@@ -50,18 +50,15 @@ public class TagDaoImpl extends AbstractEntityDao<Tag> implements TagDao<Tag>{
 
     @Override
     protected String getTableName() {
-        return "tags";
+        return "Tag";
     }
 
+
     @Override
-    public List<Tag> findTagsOfCertificate(long certificateId, @Nullable Map<String, String> sortingParameters, Pageable pageable) throws DaoException {
-        String currentQuery = FIND_TAGS_OF_GIFT_CERTIFICATE;
-        if ((sortingParameters != null) && !sortingParameters.isEmpty()) {
-            currentQuery = queryCreator.createSortQuery(sortingParameters, currentQuery);
-        }
+    public List<Tag> findTagsOfCertificate(long certificateId, Pageable pageable) throws DaoException {
         logger.info("dao layer: certificateId is " + certificateId);
-        logger.info("dao: current query is " + currentQuery);
-        TypedQuery<Tag> typedQuery = entityManager.createQuery(currentQuery, entityType);
+        logger.info("dao: current query is " + FIND_TAGS_OF_GIFT_CERTIFICATE);
+        TypedQuery<Tag> typedQuery = entityManager.createQuery(FIND_TAGS_OF_GIFT_CERTIFICATE, entityType);
         typedQuery.setParameter("gift_certificate_id", certificateId);
         return typedQuery.setFirstResult((int) pageable.getOffset())
                 .setMaxResults(pageable.getPageSize())

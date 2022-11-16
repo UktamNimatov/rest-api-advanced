@@ -1,15 +1,16 @@
 package com.epam.esm.service;
 
+import com.epam.esm.constant.ConstantMessages;
 import com.epam.esm.dao.AbstractEntityDao;
 import com.epam.esm.entity.Entity;
-import com.epam.esm.exception.DaoException;
-import com.epam.esm.exception.ServiceException;
+import com.epam.esm.exception.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import javax.xml.ws.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -24,8 +25,12 @@ public abstract class AbstractEntityService<T extends Entity> implements EntityS
     }
 
     @Override
-    public Optional<T> findById(long id) throws ServiceException {
-        return Optional.empty();
+    public T findById(long id) throws ResourceNotFoundException {
+        if (!abstractEntityDao.findById(id).isPresent()) {
+            throw new ResourceNotFoundException(String.valueOf(ConstantMessages.ERROR_CODE_404),
+                    ConstantMessages.RESOURCE_NOT_FOUND);
+        }
+        return abstractEntityDao.findById(id).get();
     }
 
     @Override
@@ -33,9 +38,9 @@ public abstract class AbstractEntityService<T extends Entity> implements EntityS
         try {
             Pageable pageable = createPageRequest(page, size);
             logger.info("service layer. pageable is " + pageable.toString());
-            logger.info("service layer result " + abstractEntityDao.findAll(pageable, new HashMap<>()).toString());
-            logger.info("service layer result size " + abstractEntityDao.findAll(pageable, new HashMap<>()).size());
-            return abstractEntityDao.findAll(pageable, new HashMap<>());
+            logger.info("service layer result " + abstractEntityDao.findAll(pageable).toString());
+            logger.info("service layer result size " + abstractEntityDao.findAll(pageable).size());
+            return abstractEntityDao.findAll(pageable);
         }catch (DaoException daoException) {
             throw new ServiceException(daoException);
         }
@@ -43,29 +48,37 @@ public abstract class AbstractEntityService<T extends Entity> implements EntityS
 
     @Override
     public void deleteById(long id) throws ServiceException {
-
+        try {
+            abstractEntityDao.deleteById(id);
+        } catch (DaoException daoException) {
+            throw new ServiceException(daoException);
+        }
     }
 
     @Override
-    public T insert(T entity) throws ServiceException {
-        return null;
+    public T insert(T entity) throws ServiceException, InvalidFieldException, DuplicateResourceException {
+        try {
+            return abstractEntityDao.insert(entity);
+        }catch (DaoException daoException) {
+            throw new ServiceException(daoException);
+        }
     }
 
     @Override
-    public Optional<T> findByName(String name) throws ServiceException {
-        return Optional.empty();
+    public T findByName(String name) throws ResourceNotFoundException {
+        logger.info("abstract entity service: name: " + name);
+        if (!abstractEntityDao.findByName(name).isPresent()) {
+            throw new ResourceNotFoundException(String.valueOf(ConstantMessages.ERROR_CODE_404),
+                    ConstantMessages.RESOURCE_NOT_FOUND);
+        }
+        return abstractEntityDao.findByName(name).get();
     }
 
     protected Pageable createPageRequest(int page, int size) throws ServiceException {
-        Pageable pageRequest;
         try {
-            pageRequest = PageRequest.of(page, size);
+            return PageRequest.of(page, size);
         } catch (IllegalArgumentException e) {
-            throw new ServiceException(e);
-//            ExceptionResult exceptionResult = new ExceptionResult();
-//            exceptionResult.addException(ExceptionMessageKey.INVALID_PAGINATION, page, size);
-//            throw new IncorrectParameterException(exceptionResult);
+            throw new ServiceException(ConstantMessages.INVALID_PAGINATION);
         }
-        return pageRequest;
     }
 }

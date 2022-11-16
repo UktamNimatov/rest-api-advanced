@@ -19,9 +19,17 @@ public enum ColumnName {
     /*
     * gift_certificates_tag
     * */
-
     public static final String GIFT_CERTIFICATE_ID = "gift_certificate_id";
     public static final String TAG_ID = "tag_id";
 
+
+    /*
+    * order
+    * */
+    public static final String PURCHASE_TIME = "purchase_time";
+
+    /*
+    * user
+    * */
 
 }

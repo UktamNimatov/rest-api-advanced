@@ -53,20 +53,16 @@ public class GiftCertificateDaoImpl extends AbstractEntityDao<GiftCertificate> i
 
     @Override
     protected String getTableName() {
-        return "gift_certificates";
+        return "GiftCertificate";
     }
 
 
     @Override
-    public List<GiftCertificate> findGiftCertificatesOfTag(Pageable pageable, String tagName, @Nullable Map<String, String> sortingParameters) throws DaoException {
+    public List<GiftCertificate> findGiftCertificatesOfTag(Pageable pageable, String tagName) throws DaoException {
         try {
-            String currentQuery = SEARCH_BY_TAG_NAME;
-            if ((sortingParameters != null) && !sortingParameters.isEmpty()) {
-                currentQuery = queryCreator.createSortQuery(sortingParameters, currentQuery);
-            }
             logger.info("dao layer: tagName is " + tagName);
-            logger.info("dao: current query is " + currentQuery);
-            TypedQuery<GiftCertificate> typedQuery = entityManager.createQuery(currentQuery, entityType);
+            logger.info("dao: current query is " + SEARCH_BY_TAG_NAME);
+            TypedQuery<GiftCertificate> typedQuery = entityManager.createQuery(SEARCH_BY_TAG_NAME, entityType);
             typedQuery.setParameter("tagName", tagName);
             return typedQuery.setFirstResult((int) pageable.getOffset())
                     .setMaxResults(pageable.getPageSize())
@@ -86,13 +82,9 @@ public class GiftCertificateDaoImpl extends AbstractEntityDao<GiftCertificate> i
     }
 
     @Override
-    public List<GiftCertificate> searchByNameOrDescription(Pageable pageable, String searchKey, @Nullable Map<String, String> sortingParameters) throws DaoException {
+    public List<GiftCertificate> searchByNameOrDescription(Pageable pageable, String searchKey) throws DaoException {
         try {
-            String currentQuery = SEARCH_QUERY;
-            if (sortingParameters != null && !sortingParameters.isEmpty()) {
-                currentQuery = queryCreator.createSortQuery(sortingParameters, SEARCH_QUERY);
-            }
-            TypedQuery<GiftCertificate> searchQuery = entityManager.createQuery(currentQuery, entityType);
+            TypedQuery<GiftCertificate> searchQuery = entityManager.createQuery(SEARCH_QUERY, entityType);
             searchQuery.setParameter("searchKey", searchKey);
             return searchQuery
                     .setFirstResult((int) pageable.getOffset())

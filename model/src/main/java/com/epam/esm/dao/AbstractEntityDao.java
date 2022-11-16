@@ -48,16 +48,12 @@ public abstract class AbstractEntityDao<T extends Entity> implements EntityDao<T
     }
 
     @Override
-    public List<T> findAll(Pageable pageable, @Nullable Map<String, String> sortingParameters) throws DaoException {
+    public List<T> findAll(Pageable pageable) throws DaoException {
         try {
-            String currentQuery = SELECT_FROM + getTableName();
-            logger.info("the abstract entity dao layer. Current query is " + currentQuery);
-            if ((sortingParameters != null) && !sortingParameters.isEmpty()) {
-                currentQuery = queryCreator.createSortQuery(sortingParameters, currentQuery);
-            }
+            logger.info("the abstract entity dao layer. Current query is " + SELECT_FROM + getTableName());
             logger.info("entity type simple name: " + entityType.getSimpleName());
-            TypedQuery<T> queryForFindAll = entityManager.createQuery(currentQuery, entityType);
-            logger.info("Created typed query is " + queryForFindAll.getResultList().toString());
+            TypedQuery<T> queryForFindAll = entityManager.createQuery(SELECT_FROM + getTableName(), entityType);
+            logger.info("Created typed query result is " + queryForFindAll.getResultList().toString());
             logger.info("result size is : " + queryForFindAll.getResultList().size());
             return queryForFindAll
                     .setFirstResult((int) pageable.getOffset())

@@ -23,6 +23,9 @@ dependencies {
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
     implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.14.0-rc1'
 
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-hateoas
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: '2.7.5'
+
     implementation project(':model')
     implementation project(':service')
 }

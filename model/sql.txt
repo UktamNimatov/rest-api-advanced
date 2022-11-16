@@ -8,8 +8,8 @@ CREATE TABLE `gift_certificates`(
 `description` TEXT NOT NULL,
 `price` DOUBLE NOT NULL,
 `duration` INTEGER NOT NULL,
-`create_date` TIMESTAMP NOT NULL,
-`last_update_date` TIMESTAMP NULL,
+`create_date` TIMESTAMP(3) NOT NULL,
+`last_update_date` TIMESTAMP(3) NULL,
 primary key(`id`)
 )ENGINE=INNODB DEFAULT CHARACTER SET utf8;
 

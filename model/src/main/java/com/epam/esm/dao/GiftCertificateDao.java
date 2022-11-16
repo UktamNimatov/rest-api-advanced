@@ -11,7 +11,7 @@ import java.util.Map;
 
 public interface GiftCertificateDao<T> extends EntityDao<GiftCertificate> {
 
-    List<T> findGiftCertificatesOfTag(Pageable pageable, String tagName, @Nullable Map<String, String> sortingParameters) throws DaoException;
+    List<T> findGiftCertificatesOfTag(Pageable pageable, String tagName) throws DaoException;
 
     T update(T giftCertificate) throws DaoException;
 
@@ -19,7 +19,7 @@ public interface GiftCertificateDao<T> extends EntityDao<GiftCertificate> {
 
 //    boolean disconnectTags(long giftCertificateId) throws DaoException;
 
-    List<T> searchByNameOrDescription(Pageable pageable, String searchKey, @Nullable Map<String, String> sortingParameters) throws DaoException;
+    List<T> searchByNameOrDescription(Pageable pageable, String searchKey) throws DaoException;
 
 //    List<T> sortByRequirements(List<T> giftCertificatesList, Map<String, String> requirements);
 }

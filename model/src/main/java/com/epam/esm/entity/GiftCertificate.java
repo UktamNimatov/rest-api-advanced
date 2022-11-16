@@ -9,7 +9,7 @@ import java.util.StringJoiner;
 
 @Table(name = "gift_certificates")
 @javax.persistence.Entity
-@JsonIgnoreProperties({"tagList"})
+@JsonIgnoreProperties("orderList")
 public class GiftCertificate extends Entity {
 
     private static final long serialVersionUID = 1L;
@@ -167,8 +167,6 @@ public class GiftCertificate extends Entity {
                 .add("duration=" + duration)
                 .add("createDate='" + createDate + "'")
                 .add("lastUpdateDate='" + lastUpdateDate + "'")
-                .add("tagList=" + tagList)
-                .add("orderList=" + orderList)
                 .toString();
     }
 }

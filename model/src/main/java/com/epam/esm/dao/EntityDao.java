@@ -13,7 +13,7 @@ public interface EntityDao<T extends Entity> {
 
     Optional<T> findById(long id) throws DaoException;
 
-    List<T> findAll(Pageable pageable, @Nullable Map<String, String> sortingParameters) throws DaoException;
+    List<T> findAll(Pageable pageable) throws DaoException;
 
     void deleteById(long id) throws DaoException;
 
