@@ -23,7 +23,7 @@ public class OrderDtoConverter implements DtoConverter<Order, OrderDto> {
         user.setId(dto.getUserId());
         order.setUser(user);
 
-        order.setGiftCertificateList(dto.getGiftCertificateList());
+//        order.setGiftCertificateList(dto.getGiftCertificateList());
         return order;
     }
 
@@ -35,7 +35,7 @@ public class OrderDtoConverter implements DtoConverter<Order, OrderDto> {
         orderDto.setPrice(entity.getPrice());
         orderDto.setPurchaseTime(entity.getPurchaseTime());
         orderDto.setUserId(entity.getUser().getId());
-        orderDto.setGiftCertificateList(entity.getGiftCertificateList());
+//        orderDto.setGiftCertificateList(entity.getGiftCertificateList());
 
         return orderDto;
     }

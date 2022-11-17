@@ -1,6 +1,6 @@
 package com.epam.esm.exception;
 
-public class InvalidFieldException extends Exception{
+public class InvalidFieldException extends RuntimeException{
     private String errorCode;
     private String errorMessage;
 

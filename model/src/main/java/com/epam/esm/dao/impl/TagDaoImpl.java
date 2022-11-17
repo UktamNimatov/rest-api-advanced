@@ -27,8 +27,8 @@ import java.util.Optional;
 public class TagDaoImpl extends AbstractEntityDao<Tag> implements TagDao<Tag>{
     private static final Logger logger = LogManager.getLogger();
 
-    private static final String MOST_WIDELY_USED_TAG = "SELECT t.id, t.name FROM gift_certificates as gc INNER JOIN gc.tags as t" +
-            " WHERE gc.id IN (SELECT o.gift_certificate_id FROM orders as o WHERE o.user_id = :user_id) " +
+    private static final String MOST_WIDELY_USED_TAG = "SELECT t FROM GiftCertificate as gc INNER JOIN gc.tagList as t" +
+            " WHERE gc.id IN (SELECT o.giftCertificateList FROM Order as o WHERE o.user.id = :user_id) " +
             "GROUP BY t.id ORDER BY COUNT(t.id) DESC";
     private static final String MOST_WIDELY_USED_TAG_WITH_HIGHEST_COST = "SELECT t.id, t.name FROM gift_certificates as gc INNER JOIN gc.tags as t " +
             " WHERE gc.id IN (SELECT o.gift_certificate_id FROM orders as o WHERE o.user_id IN (SELECT " +
@@ -38,8 +38,8 @@ public class TagDaoImpl extends AbstractEntityDao<Tag> implements TagDao<Tag>{
     private static final String SELECT_TAGS_OF_GIFT_CERTIFICATE = "SELECT * FROM gift_certificates_tags WHERE gift_certificate_id=?";
     private static final String INSERT_INTO_GIFT_CERTIFICATES_TAGS = "INSERT INTO gift_certificates_tags (gift_certificate_id, tag_id) VALUES(?, ?)";
     private static final String INSERT = "INSERT INTO tags (name) values(?)";
-    private static final String FIND_TAGS_OF_GIFT_CERTIFICATE = "SELECT t.id, t.name FROM tags as t JOIN gift_certificates_tags as gct " +
-            "ON t.id = gct.tag_id JOIN gift_certificates as gc ON gc.id = gct.gift_certificate_id WHERE gc.id=:gift_certificate_id";
+    private static final String FIND_TAGS_OF_GIFT_CERTIFICATE = "SELECT t FROM Tag as t JOIN GiftCertificatesTags as gct " +
+            "ON t.id = gct.tagId JOIN GiftCertificate as gc ON gc.id = gct.giftCertificateId WHERE gc.id=:gift_certificate_id";
 
     private QueryCreator queryCreator;
 
@@ -67,20 +67,28 @@ public class TagDaoImpl extends AbstractEntityDao<Tag> implements TagDao<Tag>{
 
     @Override
     public Optional<Tag> findMostWidelyUsedTagOfUser(long userId) throws DaoException {
-        return entityManager.createQuery(MOST_WIDELY_USED_TAG, entityType)
-                .setParameter("user_id", userId)
-                .setMaxResults(1)
-                .getResultList().stream()
-                .findFirst();
+        try {
+            return entityManager.createQuery(MOST_WIDELY_USED_TAG, entityType)
+                    .setParameter("user_id", userId)
+                    .setMaxResults(1)
+                    .getResultList().stream()
+                    .findFirst();
+        }catch (IllegalArgumentException | NullPointerException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override
     public Optional<Tag> findMostWidelyUsedTagWithHighestCostOrder() throws DaoException {
-        return entityManager.createQuery(MOST_WIDELY_USED_TAG_WITH_HIGHEST_COST, entityType)
-                .setMaxResults(1)
-                .getResultList()
-                .stream()
-                .findFirst();
+        try {
+            return entityManager.createQuery(MOST_WIDELY_USED_TAG_WITH_HIGHEST_COST, entityType)
+                    .setMaxResults(1)
+                    .getResultList()
+                    .stream()
+                    .findFirst();
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new DaoException(e);
+        }
     }
 
     @Override

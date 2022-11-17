@@ -64,6 +64,24 @@ public class TagServiceImpl extends AbstractEntityService<Tag> implements TagSer
     }
 
     @Override
+    public Tag findMostWidelyUsedTagOfUser(long userId) throws ServiceException {
+        try {
+             if (!tagDao.findMostWidelyUsedTagOfUser(userId).isPresent()) {
+                 throw new ResourceNotFoundException(String.valueOf(ConstantMessages.ERROR_CODE_404),
+                         ConstantMessages.RESOURCE_NOT_FOUND);
+             }
+             return tagDao.findMostWidelyUsedTagOfUser(userId).get();
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public Tag findMostWidelyUsedTagWithHighestCostOrder() throws ServiceException {
+        return null;
+    }
+
+    @Override
     public void checkTagsWithValidator(List<Tag> tagList) throws InvalidFieldException {
         if (tagList != null) {
             boolean checkResult = tagList

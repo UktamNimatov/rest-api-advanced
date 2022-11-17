@@ -1,20 +1,34 @@
 package com.epam.esm.dto;
 
 import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.Order;
 import com.epam.esm.entity.Tag;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.hateoas.RepresentationModel;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> {
 
+    @NotNull
     private long id;
+
+    @Size(min = 3, max = 50)
+    @NotBlank
     private String name;
+
+    @NotBlank
     private String description;
+    @NotNull
     private double price;
+    @NotNull
     private int duration;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS]XXX")
@@ -103,6 +117,7 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
     public void setTagList(List<Tag> tagList) {
         this.tagList = tagList;
     }
+
 
     @Override
     public boolean equals(Object o) {

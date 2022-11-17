@@ -10,6 +10,7 @@ import java.util.StringJoiner;
 
 @Entity
 @Table(name = "orders")
+@JsonIgnoreProperties("giftCertificateList")
 public class Order extends com.epam.esm.entity.Entity {
 
     private static final long serialVersionUID = 1L;
@@ -28,7 +29,6 @@ public class Order extends com.epam.esm.entity.Entity {
     @JoinTable(name = "order_cerficates",
             joinColumns = {@JoinColumn(name = "order_id")},
             inverseJoinColumns = {@JoinColumn(name = "gift_certificate_id")})
-    @JsonIgnoreProperties("orderList")
     private List<GiftCertificate> giftCertificateList;
 
     public Order() {

@@ -1,15 +1,22 @@
 package com.epam.esm.dto;
 
 import com.epam.esm.entity.Order;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.hateoas.RepresentationModel;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Objects;
 import java.util.StringJoiner;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto extends RepresentationModel<UserDto> {
 
     private long id;
+
+    @Size(min = 3, max = 70)
+    @NotBlank
     private String name;
     private List<Order> orderList;
 

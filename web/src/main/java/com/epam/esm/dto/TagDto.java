@@ -1,13 +1,21 @@
 package com.epam.esm.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.hateoas.RepresentationModel;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 import java.util.StringJoiner;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TagDto extends RepresentationModel<TagDto> {
 
     private long id;
+
+    @Size(min = 3, max = 50)
+    @NotBlank
     private String name;
 
     public TagDto() {

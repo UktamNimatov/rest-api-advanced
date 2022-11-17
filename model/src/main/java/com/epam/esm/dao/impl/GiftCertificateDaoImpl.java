@@ -28,6 +28,9 @@ import java.util.*;
 public class GiftCertificateDaoImpl extends AbstractEntityDao<GiftCertificate> implements GiftCertificateDao<GiftCertificate> {
     private static final Logger logger = LogManager.getLogger();
 
+    private static final String TAG_NAME = "tagName";
+    private static final String SEARCH_KEY = "searchKey";
+
     private final GiftCertificateMapper giftCertificateMapper;
     private final GiftCertificatesTagsMapper giftCertificatesTagsMapper;
     private final TagDao<Tag> tagDao;
@@ -37,9 +40,9 @@ public class GiftCertificateDaoImpl extends AbstractEntityDao<GiftCertificate> i
     private static final String SELECT_GIFT_CERTIFICATES_OF_TAG = "SELECT * FROM gift_certificates_tags WHERE tag_id=?";
     private static final String INSERT_INTO_GIFT_CERTIFICATES_TAGS = "INSERT INTO gift_certificates_tags (gift_certificate_id, tag_id) VALUES(?, ?)";
     private static final String DISCONNECT_TAGS = "DELETE FROM gift_certificates_tags WHERE gift_certificate_id=?";
-    private static final String SEARCH_QUERY = "SELECT id, name, description, price, duration, create_date, last_update_date FROM gift_certificates WHERE name LIKE CONCAT ('%', :searchKey, '%') OR description LIKE CONCAT ('%', :searchKey, '%')";
-    private static final String SEARCH_BY_TAG_NAME = "SELECT gc.id, gc.name, gc.description, gc.price, gc.duration, gc.create_date, gc.last_update_date FROM gift_certificates as gc" +
-            " JOIN gift_certificates_tags as gct ON gc.id = gct.gift_certificate_id JOIN tags ON tags.id = gct.tag_id WHERE tags.name=:tagName";
+    private static final String SEARCH_QUERY = "SELECT gc FROM GiftCertificate as gc WHERE gc.name LIKE CONCAT ('%', :searchKey, '%') OR gc.description LIKE CONCAT ('%', :searchKey, '%')";
+    private static final String SEARCH_BY_TAG_NAME = "SELECT gc FROM GiftCertificate as gc " +
+            " JOIN GiftCertificatesTags as gct ON gc.id = gct.giftCertificateId JOIN Tag as tag ON tag.id = gct.tagId WHERE tag.name=:tagName";
 
     @Autowired
     public GiftCertificateDaoImpl(GiftCertificateMapper giftCertificateMapper, GiftCertificatesTagsMapper giftCertificatesTagsMapper,
@@ -63,7 +66,7 @@ public class GiftCertificateDaoImpl extends AbstractEntityDao<GiftCertificate> i
             logger.info("dao layer: tagName is " + tagName);
             logger.info("dao: current query is " + SEARCH_BY_TAG_NAME);
             TypedQuery<GiftCertificate> typedQuery = entityManager.createQuery(SEARCH_BY_TAG_NAME, entityType);
-            typedQuery.setParameter("tagName", tagName);
+            typedQuery.setParameter(TAG_NAME, tagName);
             return typedQuery.setFirstResult((int) pageable.getOffset())
                     .setMaxResults(pageable.getPageSize())
                     .getResultList();
@@ -85,7 +88,7 @@ public class GiftCertificateDaoImpl extends AbstractEntityDao<GiftCertificate> i
     public List<GiftCertificate> searchByNameOrDescription(Pageable pageable, String searchKey) throws DaoException {
         try {
             TypedQuery<GiftCertificate> searchQuery = entityManager.createQuery(SEARCH_QUERY, entityType);
-            searchQuery.setParameter("searchKey", searchKey);
+            searchQuery.setParameter(SEARCH_KEY, searchKey);
             return searchQuery
                     .setFirstResult((int) pageable.getOffset())
                     .setMaxResults(pageable.getPageSize())

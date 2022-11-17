@@ -20,6 +20,7 @@ public class GiftCertificateDtoConverter implements DtoConverter<GiftCertificate
         giftCertificate.setCreateDate(dto.getCreateDate());
         giftCertificate.setLastUpdateDate(dto.getLastUpdateDate());
         giftCertificate.setTagList(dto.getTagList());
+//        giftCertificate.setOrderList(dto.getOrderList());
 
         return giftCertificate;
     }
@@ -36,6 +37,7 @@ public class GiftCertificateDtoConverter implements DtoConverter<GiftCertificate
         giftCertificateDto.setCreateDate(entity.getCreateDate());
         giftCertificateDto.setLastUpdateDate(entity.getLastUpdateDate());
         giftCertificateDto.setTagList(entity.getTagList());
+//        giftCertificateDto.setOrderList(entity.getOrderList());
 
         return giftCertificateDto;
     }

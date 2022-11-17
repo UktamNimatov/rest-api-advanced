@@ -1,6 +1,6 @@
 package com.epam.esm.exception;
 
-public class ResourceNotFoundException extends Exception{
+public class ResourceNotFoundException extends RuntimeException{
     private String errorCode;
     private String errorMessage;
 

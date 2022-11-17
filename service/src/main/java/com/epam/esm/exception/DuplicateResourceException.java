@@ -1,6 +1,6 @@
 package com.epam.esm.exception;
 
-public class DuplicateResourceException extends Exception{
+public class DuplicateResourceException extends RuntimeException{
     private String errorCode;
     private String errorMessage;
 

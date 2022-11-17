@@ -22,7 +22,7 @@ public class OrderDaoImpl extends AbstractEntityDao<Order> implements OrderDao<O
 
     private static final String FIND_BY_USER_ID = "SELECT o FROM orders o WHERE o.user_id = :user_id";
     private static final String MOST_EXPENSIVE_ORDER = "FROM Order as o ORDER BY o.price DESC";
-    private QueryCreator queryCreator;
+    private final QueryCreator queryCreator;
 
     public OrderDaoImpl(QueryCreator queryCreator) {
         super(Order.class, queryCreator);
@@ -57,5 +57,10 @@ public class OrderDaoImpl extends AbstractEntityDao<Order> implements OrderDao<O
         }catch (IllegalArgumentException | NullPointerException e) {
             throw new DaoException(e);
         }
+    }
+
+    @Override
+    public Optional<Order> findByName(String name) {
+        throw new UnsupportedOperationException();
     }
 }
