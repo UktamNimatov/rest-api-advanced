@@ -3,6 +3,7 @@ package com.epam.esm.controller;
 import com.epam.esm.constant.ConstantMessages;
 import com.epam.esm.dto.GiftCertificateDto;
 import com.epam.esm.dto.OrderDto;
+import com.epam.esm.dto.UserDto;
 import com.epam.esm.dto.converter.DtoConverter;
 import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
@@ -53,6 +54,13 @@ public class OrderController {
     @GetMapping("/{id}")
     public OrderDto findById(@PathVariable("id") long id) throws ResourceNotFoundException {
         OrderDto orderDto = orderDtoConverter.convertToDto(orderService.findById(id));
+        orderDtoHateoas.addLinks(orderDto);
+        return orderDto;
+    }
+
+    @GetMapping("/most-expensive")
+    public OrderDto findMostExpensiveOrder() {
+        OrderDto orderDto = orderDtoConverter.convertToDto(orderService.findMostExpensiveOrder());
         orderDtoHateoas.addLinks(orderDto);
         return orderDto;
     }

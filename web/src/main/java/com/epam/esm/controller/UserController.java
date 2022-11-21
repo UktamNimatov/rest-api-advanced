@@ -65,6 +65,13 @@ public class UserController {
         return userDto;
     }
 
+    @GetMapping("/order/most-expensive")
+    public UserDto findUserWithHighestOrder() {
+        UserDto userDto = userDtoConverter.convertToDto(userService.findUserWithHighestOrder());
+        userHateoas.addLinks(userDto);
+        return userDto;
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable long id) throws ServiceException {
         userService.deleteById(id);
@@ -79,7 +86,6 @@ public class UserController {
         userHateoas.addLinks(userDtoResult);
         return new ResponseEntity<>(userDtoResult, HttpStatus.CREATED);
     }
-
 
 
     private List<UserDto> convertToDtoList(List<User> userList) {

@@ -40,6 +40,7 @@ public class TagDaoImpl extends AbstractEntityDao<Tag> implements TagDao<Tag>{
     private static final String INSERT = "INSERT INTO tags (name) values(?)";
     private static final String FIND_TAGS_OF_GIFT_CERTIFICATE = "SELECT t FROM Tag as t JOIN GiftCertificatesTags as gct " +
             "ON t.id = gct.tagId JOIN GiftCertificate as gc ON gc.id = gct.giftCertificateId WHERE gc.id=:gift_certificate_id";
+    private static final String SQL_FIND_BY_CERTIFICATE_ID = "SELECT t FROM Tag as t INNER JOIN t.giftCertificateList gc WHERE gc.id=:gift_certificate_id";
 
     private QueryCreator queryCreator;
 
@@ -57,8 +58,8 @@ public class TagDaoImpl extends AbstractEntityDao<Tag> implements TagDao<Tag>{
     @Override
     public List<Tag> findTagsOfCertificate(long certificateId, Pageable pageable) throws DaoException {
         logger.info("dao layer: certificateId is " + certificateId);
-        logger.info("dao: current query is " + FIND_TAGS_OF_GIFT_CERTIFICATE);
-        TypedQuery<Tag> typedQuery = entityManager.createQuery(FIND_TAGS_OF_GIFT_CERTIFICATE, entityType);
+        logger.info("dao: current query is " + SQL_FIND_BY_CERTIFICATE_ID);
+        TypedQuery<Tag> typedQuery = entityManager.createQuery(SQL_FIND_BY_CERTIFICATE_ID, entityType);
         typedQuery.setParameter("gift_certificate_id", certificateId);
         return typedQuery.setFirstResult((int) pageable.getOffset())
                 .setMaxResults(pageable.getPageSize())

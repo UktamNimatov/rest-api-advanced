@@ -27,5 +27,7 @@ public class UserHateoas implements Hateoas<UserDto> {
                 .findByName(userDto.getName())).withRel("find by name"));
         userDto.add(linkTo(methodOn(CONTROLLER)
                 .insertUser(userDto)).withRel("insert new"));
+        userDto.add(linkTo(methodOn(CONTROLLER)
+                .findUserWithHighestOrder()).withSelfRel());
     }
 }

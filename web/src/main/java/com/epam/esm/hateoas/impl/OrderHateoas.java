@@ -24,5 +24,7 @@ public class OrderHateoas implements Hateoas<OrderDto> {
                 .deleteOrder(orderDto.getId())).withRel("delete"));
         orderDto.add(linkTo(methodOn(CONTROLLER)
                 .insertOrder(orderDto)).withRel("insert new"));
+        orderDto.add(linkTo(methodOn(CONTROLLER)
+                .findMostExpensiveOrder()).withRel("find most expensive order"));
     }
 }

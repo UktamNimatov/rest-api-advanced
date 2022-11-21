@@ -88,6 +88,13 @@ public class TagController {
         return tagDto;
     }
 
+    @GetMapping("/{userId}/most-frequently")
+    public TagDto findMostFrequentlyUsedTag(@PathVariable("userId") String userId) {
+        TagDto tagDto = tagDtoConverter.convertToDto(tagService.findMostWidelyUsedTagOfUser(Long.parseLong(userId)));
+        tagHateoas.addLinks(tagDto);
+        return tagDto;
+    }
+
     private List<TagDto> convertToDtoList(List<Tag> tagList) {
         List<TagDto> tagDtoList = new ArrayList<>();
         for (Tag tag : tagList) {

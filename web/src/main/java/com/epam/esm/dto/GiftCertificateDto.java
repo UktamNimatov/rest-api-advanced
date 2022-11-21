@@ -4,6 +4,7 @@ import com.epam.esm.entity.GiftCertificate;
 import com.epam.esm.entity.Order;
 import com.epam.esm.entity.Tag;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -31,19 +32,23 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
     @NotNull
     private int duration;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS]XXX")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private String createDate;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS]XXX")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     private String lastUpdateDate;
 
     private List<Tag> tagList;
+
+    @JsonIgnore
+    private List<Order> orderList;
 
     public GiftCertificateDto() {
     }
 
     public GiftCertificateDto(long id, String name, String description, double price,
-                              int duration, String createDate, String lastUpdateDate, List<Tag> tagList) {
+                              int duration, String createDate, String lastUpdateDate,
+                              List<Tag> tagList, List<Order> orderList) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -52,6 +57,7 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
         this.createDate = createDate;
         this.lastUpdateDate = lastUpdateDate;
         this.tagList = tagList;
+        this.orderList = orderList;
     }
 
     public long getId() {
@@ -118,6 +124,13 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
         this.tagList = tagList;
     }
 
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -137,7 +150,7 @@ public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> 
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getId(), getName(), getDescription(), getPrice(), getDuration(), getCreateDate(), getLastUpdateDate(), getTagList());
+        return Objects.hash(super.hashCode(), getId(), getName(), getDescription(), getPrice(), getDuration(), getCreateDate(), getLastUpdateDate(), getTagList(), getOrderList());
     }
 
     @Override

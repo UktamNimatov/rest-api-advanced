@@ -44,7 +44,7 @@ drop table if exists `orders`;
 CREATE TABLE `orders`(
 `id` INTEGER NOT NULL auto_increment,
 `price` DECIMAL(8, 2) UNSIGNED NOT NULL,
-`purchase_time` timestamp NOT NULL,
+`purchase_time`(3) timestamp NOT NULL,
 `user_id` INTEGER NOT NULL,
 `gift_certificate_id` INTEGER NOT NULL,
 primary key(`id`),
@@ -163,3 +163,10 @@ INSERT INTO `orders` VALUES('2', '230.1', now(), 4);
 INSERT INTO `order_certificates` VALUES(4, 2, 1);
 INSERT INTO `order_certificates` VALUES(5, 2, 7);
 INSERT INTO `order_certificates` VALUES(6, 2, 4);
+
+USE `rest-api-advanced`;
+update `orders` set `purchase_time`= '2022-11-15T17:24:26.924' where id = 1;
+update `orders` set `purchase_time`= '2022-11-15T17:39:47.245' where id = 2;
+
+use `rest-api-advanced`;
+alter table `users` auto_increment = 100;

@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 @Component
 public class UserValidator {
     private static final Logger logger = LogManager.getLogger();
-    private static final String USERNAME_REGEX = "[\\p{Alpha}]{3,50}";
+    private static final String USERNAME_REGEX = "[\\p{Alpha}\\s*+\\p{Alpha}]{3,50}";
 
     public boolean checkUser(User user) {
         logger.info("is USERNAME null: " + (user.getName() == null));
