@@ -3,8 +3,10 @@ package com.epam.esm.service.impl;
 import com.epam.esm.constant.ConstantMessages;
 import com.epam.esm.dao.AbstractEntityDao;
 import com.epam.esm.dao.GiftCertificateDao;
+import com.epam.esm.dao.OrderDao;
 import com.epam.esm.dao.TagDao;
 import com.epam.esm.entity.GiftCertificate;
+import com.epam.esm.entity.Order;
 import com.epam.esm.entity.Tag;
 import com.epam.esm.exception.*;
 import com.epam.esm.service.AbstractEntityService;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TagServiceImpl extends AbstractEntityService<Tag> implements TagService<Tag> {
@@ -24,13 +27,15 @@ public class TagServiceImpl extends AbstractEntityService<Tag> implements TagSer
     private final TagDao<Tag> tagDao;
     private final TagValidator tagValidator;
     private final GiftCertificateDao<GiftCertificate> giftCertificateDao;
+    private final OrderDao<Order> orderDao;
 
     @Autowired
-    public TagServiceImpl(AbstractEntityDao<Tag> abstractEntityDao, TagDao<Tag> tagDao, TagValidator tagValidator, GiftCertificateDao<GiftCertificate> giftCertificateDao) {
+    public TagServiceImpl(AbstractEntityDao<Tag> abstractEntityDao, TagDao<Tag> tagDao, TagValidator tagValidator, GiftCertificateDao<GiftCertificate> giftCertificateDao, OrderDao<Order> orderDao) {
         super(abstractEntityDao);
         this.tagDao = tagDao;
         this.tagValidator = tagValidator;
         this.giftCertificateDao = giftCertificateDao;
+        this.orderDao = orderDao;
     }
 
     @Override
@@ -76,10 +81,6 @@ public class TagServiceImpl extends AbstractEntityService<Tag> implements TagSer
         }
     }
 
-    @Override
-    public Tag findMostWidelyUsedTagWithHighestCostOrder() throws ServiceException {
-        return null;
-    }
 
     @Override
     public void checkTagsWithValidator(List<Tag> tagList) throws InvalidFieldException {

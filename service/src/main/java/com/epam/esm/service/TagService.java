@@ -14,8 +14,6 @@ public interface TagService<T> extends EntityService<Tag> {
 
     T findMostWidelyUsedTagOfUser(long userId) throws ServiceException;
 
-    T findMostWidelyUsedTagWithHighestCostOrder() throws ServiceException;
-
     void checkTagsWithValidator(List<Tag> tagList) throws InvalidFieldException;
 
 }

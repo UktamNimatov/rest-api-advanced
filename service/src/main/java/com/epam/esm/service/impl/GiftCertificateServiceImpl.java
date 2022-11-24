@@ -79,9 +79,9 @@ public class GiftCertificateServiceImpl extends AbstractEntityService<GiftCertif
     @Override
     public GiftCertificate update(GiftCertificate giftCertificate) throws ServiceException, InvalidFieldException {
         try {
-            checkFieldsForUpdate(giftCertificate);
-            tagService.checkTagsWithValidator(giftCertificate.getTagList());
-            return giftCertificateDao.update(giftCertificate);
+            GiftCertificate giftCertificateToUpdate = findById(giftCertificate.getId());
+            checkFieldsForUpdate(giftCertificate, giftCertificateToUpdate);
+            return giftCertificateDao.update(giftCertificateToUpdate);
         } catch (DaoException daoException) {
             throw new ServiceException(daoException);
         }
@@ -125,38 +125,59 @@ public class GiftCertificateServiceImpl extends AbstractEntityService<GiftCertif
         return findAll(page, size);
     }
 
-    private void checkFieldsForUpdate(GiftCertificate giftCertificate) throws InvalidFieldException {
+    private void checkFieldsForUpdate(GiftCertificate giftCertificate, GiftCertificate giftCertificateToUpdate) throws InvalidFieldException {
         if (giftCertificate.getName() != null) {
+            logger.info("name is not null");
             if (!giftCertificateValidator.checkName(giftCertificate.getName())) {
                 throw new InvalidFieldException(String.valueOf(ConstantMessages.ERROR_CODE_400),
                         ConstantMessages.INVALID_GIFT_CERTIFICATE_NAME);
             }
+            giftCertificateToUpdate.setName(giftCertificate.getName());
         }
         if (giftCertificate.getDescription() != null) {
+            logger.info("description is not null");
             if (!giftCertificateValidator.checkDescription(giftCertificate.getDescription())) {
                 throw new InvalidFieldException(String.valueOf(ConstantMessages.ERROR_CODE_400),
                         ConstantMessages.INVALID_GIFT_CERTIFICATE_DESCRIPTION);
             }
+            giftCertificateToUpdate.setDescription(giftCertificate.getDescription());
         }
-        if (!giftCertificateValidator.checkDuration(giftCertificate.getDuration())) {
-            throw new InvalidFieldException(String.valueOf(ConstantMessages.ERROR_CODE_400),
-                    ConstantMessages.INVALID_GIFT_CERTIFICATE_DURATION);
+        if (giftCertificate.getDuration() != 0) {
+            logger.info("duration is not null");
+            if (!giftCertificateValidator.checkDuration(giftCertificate.getDuration())) {
+                throw new InvalidFieldException(String.valueOf(ConstantMessages.ERROR_CODE_400),
+                        ConstantMessages.INVALID_GIFT_CERTIFICATE_DURATION);
+            }
+            giftCertificateToUpdate.setDuration(giftCertificate.getDuration());
         }
-        if (!giftCertificateValidator.checkPrice(giftCertificate.getPrice())) {
-            throw new InvalidFieldException(String.valueOf(ConstantMessages.ERROR_CODE_400),
-                    ConstantMessages.INVALID_GIFT_CERTIFICATE_PRICE);
+        if (giftCertificate.getPrice() != 0d) {
+            logger.info("price is not null");
+            if (!giftCertificateValidator.checkPrice(giftCertificate.getPrice())) {
+                throw new InvalidFieldException(String.valueOf(ConstantMessages.ERROR_CODE_400),
+                        ConstantMessages.INVALID_GIFT_CERTIFICATE_PRICE);
+            }
+            giftCertificateToUpdate.setPrice(giftCertificate.getPrice());
         }
         if (giftCertificate.getCreateDate() != null) {
+            logger.info("create date is not null");
             if (!giftCertificateValidator.checkCreateDate(giftCertificate.getCreateDate())) {
                 throw new InvalidFieldException(String.valueOf(ConstantMessages.ERROR_CODE_400),
                         ConstantMessages.INVALID_GIFT_CERTIFICATE_CREATE_DATE);
             }
+            giftCertificateToUpdate.setCreateDate(giftCertificate.getCreateDate());
         }
         if (giftCertificate.getLastUpdateDate() != null) {
+            logger.info("last update date is not null");
             if (!giftCertificateValidator.checkLastUpdateDate(giftCertificate.getLastUpdateDate())) {
                 throw new InvalidFieldException(String.valueOf(ConstantMessages.ERROR_CODE_400),
                         ConstantMessages.INVALID_GIFT_CERTIFICATE_UPDATE_DATE);
             }
+            giftCertificateToUpdate.setLastUpdateDate(giftCertificate.getLastUpdateDate());
+        }
+        if (giftCertificate.getTagList() != null) {
+            logger.info("gift certificates tag list is not null");
+            tagService.checkTagsWithValidator(giftCertificate.getTagList());
+            giftCertificateToUpdate.setTagList(giftCertificate.getTagList());
         }
     }
 }

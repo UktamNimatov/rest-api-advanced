@@ -50,12 +50,12 @@ public class GiftCertificateValidatorImpl implements GiftCertificateValidator {
 
     @Override
     public boolean checkPrice(double price) {
-        return (price >= 0.0 && Pattern.matches(PRICE_REGEX, String.valueOf(price)));
+        return (price > 0.0 && Pattern.matches(PRICE_REGEX, String.valueOf(price)));
     }
 
     @Override
     public boolean checkDuration(int duration) {
-        return duration >= 0 && duration < Integer.MAX_VALUE;
+        return duration > 0 && duration < Integer.MAX_VALUE;
     }
 
     @Override
