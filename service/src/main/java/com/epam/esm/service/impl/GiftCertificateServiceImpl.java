@@ -15,6 +15,7 @@ import com.epam.esm.validator.GiftCertificateValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +45,8 @@ public class GiftCertificateServiceImpl extends AbstractEntityService<GiftCertif
         this.tagDao = tagDao;
         this.tagService = tagService;
     }
+
+
 
     @Override
     public GiftCertificate insert(GiftCertificate giftCertificate) throws ServiceException, InvalidFieldException, DuplicateResourceException {
@@ -85,16 +88,6 @@ public class GiftCertificateServiceImpl extends AbstractEntityService<GiftCertif
         } catch (DaoException daoException) {
             throw new ServiceException(daoException);
         }
-    }
-
-    @Override
-    public boolean connectTags(List<Tag> tags, long giftCertificateId) throws ServiceException {
-        return false;
-    }
-
-    @Override
-    public boolean disconnectTags(long giftCertificateId) throws ServiceException {
-        return false;
     }
 
     @Override

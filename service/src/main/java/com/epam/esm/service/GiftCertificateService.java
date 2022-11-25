@@ -13,13 +13,11 @@ import java.util.Map;
 
 public interface GiftCertificateService<T> extends EntityService<GiftCertificate> {
 
+    GiftCertificate insert(GiftCertificate giftCertificate) throws ServiceException;
+
     List<T> findGiftCertificatesOfTag(int page, int size, String tagName) throws ServiceException, ResourceNotFoundException;
 
     GiftCertificate update(T giftCertificate) throws ServiceException, InvalidFieldException;
-
-    boolean connectTags(List<Tag> tags, long giftCertificateId) throws ServiceException;
-
-    boolean disconnectTags(long giftCertificateId) throws ServiceException;
 
     List<T> searchByNameOrDescription(int page, int size, String searchKey) throws ServiceException, ResourceNotFoundException;
 
