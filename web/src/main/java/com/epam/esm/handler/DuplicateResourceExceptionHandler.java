@@ -9,11 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.persistence.EntityNotFoundException;
+
 @RestControllerAdvice
 public class DuplicateResourceExceptionHandler {
     private final HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-    @ExceptionHandler(DuplicateResourceException.class)
+    @ExceptionHandler({DuplicateResourceException.class})
     public ResponseEntity<ExceptionResponse> handle(DuplicateResourceException exception) {
         String errorMessage = exception.getErrorMessage();
         if (errorMessage.contains(ConstantMessages.EXISTING_GIFT_CERTIFICATE_NAME) ||

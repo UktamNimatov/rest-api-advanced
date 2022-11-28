@@ -99,6 +99,19 @@ public class ResourceNotFoundExceptionHandler extends ResponseEntityExceptionHan
         return new ResponseEntity<>(exceptionResponse, status);
     }
 
+    @ExceptionHandler(UnsupportedOperationException.class)
+    public ResponseEntity<ExceptionResponse> handleUnsupportedOperationException(UnsupportedOperationException exception) {
+        String errorMessage = exception.getMessage();
+        if (errorMessage.contains(ConstantMessages.OPERATION_NOT_SUPPORTED)) {
+            errorMessage = errorMessage.replace(ConstantMessages.OPERATION_NOT_SUPPORTED,
+                    Translator.toLocale(ConstantMessages.OPERATION_NOT_SUPPORTED));
+        }
+        ExceptionResponse exceptionResponse = new ExceptionResponse(errorMessage,
+                String.valueOf(ConstantMessages.ERROR_CODE_405));
+        return new ResponseEntity<>(exceptionResponse, httpStatus);
+    }
+
+
     /*methods below are of secondary importance*/
 
     @Override

@@ -57,4 +57,9 @@ public class UserServiceImpl extends AbstractEntityService<User> implements User
             throw new ServiceException(e);
         }
     }
+
+    @Override
+    public void deleteById(long id) {
+        throw new UnsupportedOperationException(ConstantMessages.OPERATION_NOT_SUPPORTED);
+    }
 }

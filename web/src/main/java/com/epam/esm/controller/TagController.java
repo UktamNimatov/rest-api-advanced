@@ -47,7 +47,7 @@ public class TagController {
 
     @GetMapping
     public List<TagDto> findAll(@RequestParam(required = false) String giftCertificateName,
-                             @RequestParam(required = false) Long giftCertificateId,
+                                 @RequestParam(required = false) Long giftCertificateId,
                              @RequestParam(value = "page", defaultValue = "0", required = false) int page,
                              @RequestParam(value = "size", defaultValue = "5", required = false) int size) {
         if (giftCertificateId != null) {

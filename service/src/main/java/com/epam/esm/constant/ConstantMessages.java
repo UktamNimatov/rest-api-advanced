@@ -48,4 +48,6 @@ public enum ConstantMessages {
 
     public static final String INVALID_USERNAME = "invalid.username";
     public static final String EXISTING_USERNAME = "already.existing.username";
+
+    public static final String OPERATION_NOT_SUPPORTED = "this.operation.not.supported";
 }
