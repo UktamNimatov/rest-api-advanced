@@ -1,6 +1,7 @@
 package com.epam.esm.entity;
 
 
+import com.epam.esm.audit.AuditListener;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -13,6 +14,7 @@ import javax.persistence.Entity;
 @Entity
 @Table(name = "tags")
 @JsonIgnoreProperties("giftCertificateList")
+@EntityListeners(AuditListener.class)
 public class Tag extends com.epam.esm.entity.Entity {
 
     private static final long serialVersionUID = 1L;
@@ -20,7 +22,7 @@ public class Tag extends com.epam.esm.entity.Entity {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "tagList", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(mappedBy = "tagList", fetch = FetchType.LAZY)
     private List<GiftCertificate> giftCertificateList;
 
     public Tag() {

@@ -27,13 +27,12 @@ import java.util.Optional;
 public class TagDaoImpl extends AbstractEntityDao<Tag> implements TagDao<Tag>{
     private static final Logger logger = LogManager.getLogger();
 
-    private static final String MOST_WIDELY_USED_TAG = "SELECT t FROM GiftCertificate as gc INNER JOIN gc.tagList as t" +
-            " WHERE gc.id IN (SELECT o.giftCertificateList FROM Order as o WHERE o.user.id = :user_id) " +
+    private static final String MOST_WIDELY_USED_TAG = "SELECT t FROM Order as o INNER JOIN o.giftCertificateList as gc INNER JOIN " +
+            " gc.tagList as t WHERE o.user.id IN (SELECT o.user.id FROM Order as o WHERE o.user.id = :user_id) " +
             "GROUP BY t.id ORDER BY COUNT(t.id) DESC";
-    private static final String MOST_WIDELY_USED_TAG_WITH_HIGHEST_COST = "SELECT t.id, t.name FROM gift_certificates as gc INNER JOIN gc.tags as t " +
-            " WHERE gc.id IN (SELECT o.gift_certificate_id FROM orders as o WHERE o.user_id IN (SELECT " +
-            "o.user_id FROM orders as o GROUP BY o.user_id ORDER BY SUM(o.price) DESC)) GROUP BY t.id " +
-            "ORDER BY COUNT(t.id) DESC";
+    private static final String MOST_WIDELY_USED_TAG_WITH_HIGHEST_COST = "SELECT t FROM Order as o INNER JOIN o.giftCertificateList as gc INNER JOIN " +
+            " gc.tagList as t WHERE o.user.id IN (SELECT o.user.id FROM Order o ORDER BY o.price)" +
+            "GROUP BY t.id ORDER BY COUNT(t.id) DESC";
 
     private static final String SELECT_TAGS_OF_GIFT_CERTIFICATE = "SELECT * FROM gift_certificates_tags WHERE gift_certificate_id=?";
     private static final String INSERT_INTO_GIFT_CERTIFICATES_TAGS = "INSERT INTO gift_certificates_tags (gift_certificate_id, tag_id) VALUES(?, ?)";
@@ -69,6 +68,7 @@ public class TagDaoImpl extends AbstractEntityDao<Tag> implements TagDao<Tag>{
     @Override
     public Optional<Tag> findMostWidelyUsedTagOfUser(long userId) throws DaoException {
         try {
+            logger.info("current query is: " + MOST_WIDELY_USED_TAG);
             return entityManager.createQuery(MOST_WIDELY_USED_TAG, entityType)
                     .setParameter("user_id", userId)
                     .setMaxResults(1)
@@ -79,18 +79,6 @@ public class TagDaoImpl extends AbstractEntityDao<Tag> implements TagDao<Tag>{
         }
     }
 
-    @Override
-    public Optional<Tag> findMostWidelyUsedTagWithHighestCostOrder() throws DaoException {
-        try {
-            return entityManager.createQuery(MOST_WIDELY_USED_TAG_WITH_HIGHEST_COST, entityType)
-                    .setMaxResults(1)
-                    .getResultList()
-                    .stream()
-                    .findFirst();
-        } catch (IllegalArgumentException | NullPointerException e) {
-            throw new DaoException(e);
-        }
-    }
 
     @Override
     public boolean connectGiftCertificates(List<GiftCertificate> giftCertificates, long tagId) throws DaoException {

@@ -1,5 +1,6 @@
 package com.epam.esm.entity;
 
+import com.epam.esm.audit.AuditListener;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.StringJoiner;
 @Entity
 @Table(name = "users")
 @JsonIgnoreProperties({"orders"})
+@EntityListeners(AuditListener.class)
 public class User extends com.epam.esm.entity.Entity {
 
     private static final long serialVersionUID = 1L;

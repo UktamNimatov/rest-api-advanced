@@ -1,5 +1,6 @@
 package com.epam.esm.entity;
 
+import com.epam.esm.audit.AuditListener;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.util.StringJoiner;
 @Entity
 @Table(name = "orders")
 @JsonIgnoreProperties("giftCertificateList")
+@EntityListeners(AuditListener.class)
 public class Order extends com.epam.esm.entity.Entity {
 
     private static final long serialVersionUID = 1L;
@@ -26,7 +28,7 @@ public class Order extends com.epam.esm.entity.Entity {
     private User user;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
-    @JoinTable(name = "order_cerficates",
+    @JoinTable(name = "order_certificates",
             joinColumns = {@JoinColumn(name = "order_id")},
             inverseJoinColumns = {@JoinColumn(name = "gift_certificate_id")})
     private List<GiftCertificate> giftCertificateList;

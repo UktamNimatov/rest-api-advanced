@@ -1,5 +1,6 @@
 package com.epam.esm.entity;
 
+import com.epam.esm.audit.AuditListener;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.StringJoiner;
 @Table(name = "gift_certificates")
 @javax.persistence.Entity
 @JsonIgnoreProperties("orderList")
+@EntityListeners(AuditListener.class)
 public class GiftCertificate extends Entity {
 
     private static final long serialVersionUID = 1L;
@@ -21,10 +23,10 @@ public class GiftCertificate extends Entity {
     private String description;
 
     @Column(name = "price")
-    private double price;
+    private Double price;
 
     @Column(name = "duration")
-    private int duration;
+    private Integer duration;
 
     @Column(name = "create_date")
     private String createDate;
@@ -32,7 +34,7 @@ public class GiftCertificate extends Entity {
     @Column(name = "last_update_date")
     private String lastUpdateDate;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "gift_certificates_tags",
             joinColumns = @JoinColumn(name = "gift_certificate_id"),
@@ -47,7 +49,7 @@ public class GiftCertificate extends Entity {
     public GiftCertificate() {
     }
 
-    public GiftCertificate(String name, String description, double price, int duration,
+    public GiftCertificate(String name, String description, Double price, Integer duration,
                            String createDate, String lastUpdateDate, List<Tag> tagList, List<Order> orderList) {
         this.name = name;
         this.description = description;
@@ -59,8 +61,8 @@ public class GiftCertificate extends Entity {
         this.orderList = orderList;
     }
 
-    public GiftCertificate(long id, String name, String description, double price,
-                           int duration, String createDate, String lastUpdateDate,
+    public GiftCertificate(long id, String name, String description, Double price,
+                           Integer duration, String createDate, String lastUpdateDate,
                            List<Tag> tagList, List<Order> orderList) {
         super(id);
         this.name = name;
@@ -89,19 +91,19 @@ public class GiftCertificate extends Entity {
         this.description = description;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public int getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 

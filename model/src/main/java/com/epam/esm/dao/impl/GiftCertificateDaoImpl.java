@@ -59,7 +59,6 @@ public class GiftCertificateDaoImpl extends AbstractEntityDao<GiftCertificate> i
         return "GiftCertificate";
     }
 
-
     @Override
     public List<GiftCertificate> findGiftCertificatesOfTag(Pageable pageable, String tagName) throws DaoException {
         try {

@@ -21,8 +21,8 @@ public class UserHateoas implements Hateoas<UserDto> {
     public void addLinks(UserDto userDto) throws ResourceNotFoundException, ServiceException, InvalidFieldException, DuplicateResourceException {
         userDto.add(linkTo(methodOn(CONTROLLER)
                 .findById(userDto.getId())).withRel("find by id"));
-        userDto.add(linkTo(methodOn(CONTROLLER)
-                .deleteUser(userDto.getId())).withRel("delete"));
+//        userDto.add(linkTo(methodOn(CONTROLLER)
+//                .deleteUser(userDto.getId())).withRel("delete"));
         userDto.add(linkTo(methodOn(CONTROLLER)
                 .findByName(userDto.getName())).withRel("find by name"));
         userDto.add(linkTo(methodOn(CONTROLLER)

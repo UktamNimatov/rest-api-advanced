@@ -17,8 +17,6 @@ public interface TagDao<T> extends EntityDao<Tag> {
 
     Optional<Tag> findMostWidelyUsedTagOfUser(long userId) throws DaoException;
 
-    Optional<Tag> findMostWidelyUsedTagWithHighestCostOrder() throws DaoException;
-
     boolean connectGiftCertificates(List<GiftCertificate> giftCertificates, long tagId) throws DaoException;
 
 
