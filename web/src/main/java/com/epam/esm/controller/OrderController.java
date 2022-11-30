@@ -21,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class OrderController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OrderDto> insertOrder(@RequestBody OrderDto orderDto) throws ServiceException, InvalidFieldException, DuplicateResourceException {
+    public ResponseEntity<OrderDto> insertOrder(@Valid @RequestBody OrderDto orderDto) throws ServiceException, InvalidFieldException, DuplicateResourceException {
         OrderDto orderDtoResult =
                 orderDtoConverter.convertToDto(
                         orderService.insert(orderDtoConverter.convertToEntity(orderDto)));

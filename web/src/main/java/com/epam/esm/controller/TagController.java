@@ -24,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class TagController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TagDto> insertTag(@RequestBody TagDto tagDto) throws ServiceException, InvalidFieldException, DuplicateResourceException {
+    public ResponseEntity<TagDto> insertTag(@Valid @RequestBody TagDto tagDto) throws ServiceException, InvalidFieldException, DuplicateResourceException {
         TagDto tagDtoResult =
                 tagDtoConverter.convertToDto(
                         tagService.insert(tagDtoConverter.convertToEntity(tagDto)));

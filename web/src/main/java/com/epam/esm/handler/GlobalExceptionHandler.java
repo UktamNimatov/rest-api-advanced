@@ -2,16 +2,35 @@ package com.epam.esm.handler;
 
 import com.epam.esm.config.localization.Translator;
 import com.epam.esm.constant.ConstantMessages;
-import com.epam.esm.exception.ExceptionResponse;
-import com.epam.esm.exception.InvalidFieldException;
+import com.epam.esm.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class InvalidFieldExceptionHandler {
-    private final HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+public class GlobalExceptionHandler {
+    private final HttpStatus internalServerErrorStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+    private final HttpStatus badRequestStatus = HttpStatus.BAD_REQUEST;
+
+    @ExceptionHandler(DaoException.class)
+    public ResponseEntity<ExceptionResponse> handleDaoException(DaoException daoException) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(daoException.getLocalizedMessage(), ConstantMessages.DAO_ERROR_MESSAGE);
+        exceptionResponse.setErrorCode(internalServerErrorStatus + ConstantMessages.DAO_ERROR_MESSAGE);
+        return new ResponseEntity<>(exceptionResponse, internalServerErrorStatus);
+    }
+
+    @ExceptionHandler({DuplicateResourceException.class})
+    public ResponseEntity<ExceptionResponse> handle(DuplicateResourceException exception) {
+        String errorMessage = exception.getErrorMessage();
+        if (errorMessage.contains(ConstantMessages.EXISTING_GIFT_CERTIFICATE_NAME) ||
+                errorMessage.contains(ConstantMessages.EXISTING_TAG_NAME)) {
+            errorMessage = Translator.toLocale(exception.getErrorMessage());
+        }
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(errorMessage, exception.getErrorCode());
+        return new ResponseEntity<>(exceptionResponse, badRequestStatus);
+    }
 
     @ExceptionHandler(InvalidFieldException.class)
     public ResponseEntity<ExceptionResponse> handleException(InvalidFieldException invalidFieldException) {
@@ -50,6 +69,14 @@ public class InvalidFieldExceptionHandler {
         }
         ExceptionResponse exceptionResponse =
                 new ExceptionResponse(errorMessage, invalidFieldException.getErrorCode());
-        return new ResponseEntity<>(exceptionResponse, httpStatus);
+        return new ResponseEntity<>(exceptionResponse, badRequestStatus);
+    }
+
+    @ExceptionHandler(ServiceException.class)
+    public ResponseEntity<ExceptionResponse> handleServiceException(ServiceException serviceException) {
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(serviceException.getLocalizedMessage(), ConstantMessages.SERVICE_ERROR_MESSAGE);
+        exceptionResponse.setErrorCode(internalServerErrorStatus + ConstantMessages.SERVICE_ERROR_MESSAGE);
+        return new ResponseEntity<>(exceptionResponse, internalServerErrorStatus);
     }
 }

@@ -1,14 +1,17 @@
 package com.epam.esm.entity;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import com.epam.esm.audit.AuditListener;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.StringJoiner;
 
 @MappedSuperclass
+@EntityListeners({AuditListener.class})
 public abstract class Entity implements Serializable {
 
     @Id

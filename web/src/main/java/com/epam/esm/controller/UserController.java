@@ -19,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -73,13 +74,13 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable long id) throws ServiceException {
+    public void deleteUser(@PathVariable long id) throws ServiceException {
         userService.deleteById(id);
-        return ResponseEntity.status(HttpStatus.valueOf(204)).body(ConstantMessages.SUCCESSFULLY_DELETED + id);
+//        return ResponseEntity.status(HttpStatus.valueOf(204)).body(ConstantMessages.SUCCESSFULLY_DELETED + id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDto> insertUser(@RequestBody UserDto userDto) throws ServiceException, InvalidFieldException, DuplicateResourceException {
+    public ResponseEntity<UserDto> insertUser(@Valid @RequestBody UserDto userDto) throws ServiceException, InvalidFieldException, DuplicateResourceException {
         UserDto userDtoResult =
                 userDtoConverter.convertToDto(
                         userService.insert(userDtoConverter.convertToEntity(userDto)));

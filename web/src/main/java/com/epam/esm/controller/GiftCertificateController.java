@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +63,7 @@ public class GiftCertificateController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GiftCertificateDto> insertGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDto) throws ServiceException, InvalidFieldException, DuplicateResourceException {
+    public ResponseEntity<GiftCertificateDto> insertGiftCertificate(@Valid @RequestBody GiftCertificateDto giftCertificateDto) throws ServiceException, InvalidFieldException, DuplicateResourceException {
         GiftCertificateDto giftCertificateDtoResult =
                 giftCertificateDtoConverter.convertToDto(
                         giftCertificateService.insert(giftCertificateDtoConverter.convertToEntity(giftCertificateDto)));
@@ -77,7 +78,7 @@ public class GiftCertificateController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<GiftCertificateDto> updateGiftCertificate(@RequestBody GiftCertificateDto giftCertificateDto) throws ServiceException, InvalidFieldException { ;
+    public ResponseEntity<GiftCertificateDto> updateGiftCertificate(@Valid @RequestBody GiftCertificateDto giftCertificateDto) throws ServiceException, InvalidFieldException { ;
         GiftCertificateDto giftCertificateDtoResult =
                 giftCertificateDtoConverter.convertToDto(
                         giftCertificateService.update(giftCertificateDtoConverter.convertToEntity(giftCertificateDto)));
