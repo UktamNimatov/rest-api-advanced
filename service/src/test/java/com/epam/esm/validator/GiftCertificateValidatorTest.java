@@ -54,7 +54,7 @@ public class GiftCertificateValidatorTest {
     @Test
     @DisplayName(value = "Testing validity of the creation date of gift certficate")
     public void testCreateDate() {
-        boolean test1 = validator.checkCreateDate("2022-12-11T16:34:24.024");
+        boolean test1 = validator.checkCreateDate("2024-12-11T16:34:24.024");
         Assertions.assertFalse(test1);
         boolean test2 = validator.checkCreateDate("2022-04-11T16:34:24.024");
         Assertions.assertTrue(test2);
