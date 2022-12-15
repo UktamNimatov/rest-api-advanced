@@ -1,0 +1,177 @@
+drop database if exists `rest-api-advanced`;
+CREATE DATABASE `rest-api-advanced`;
+
+USE `rest-api-advanced`;
+drop table if exists `gift_certificates`;
+CREATE TABLE `gift_certificates`(
+`id` INTEGER NOT NULL auto_increment,
+`name` VARCHAR(50) NOT NULL	UNIQUE,
+`description` TEXT NOT NULL,
+`price` DOUBLE NOT NULL,
+`duration` INTEGER NOT NULL,
+`create_date` TIMESTAMP(3) NOT NULL,
+`last_update_date` TIMESTAMP(3) NULL,
+primary key(`id`)
+)ENGINE=INNODB DEFAULT CHARACTER SET utf8;
+
+USE `rest-api-advanced`;
+drop table if exists `tags`;
+CREATE TABLE `tags`(
+`id` INTEGER NOT NULL auto_increment,
+`name` VARCHAR(50) NOT NULL UNIQUE,
+primary key(`id`)
+)ENGINE=INNODB DEFAULT CHARACTER SET utf8;
+
+USE `rest-api-advanced`;
+create table `gift_certificates_tags` (
+`id` integer NOT NULL auto_increment,
+`gift_certificate_id` INTEGER NOT NULL,
+`tag_id` INTEGER NOT NULL,
+primary key(`id`),
+CONSTRAINT `fk_gift_certificate_id` FOREIGN KEY (`gift_certificate_id`) REFERENCES `gift_certificates` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT `fk_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tags` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARACTER SET utf8;
+
+USE `rest-api-advanced`;
+drop table if exists `users`;
+CREATE TABLE `users`(
+`id` INTEGER NOT NULL auto_increment,
+`name` VARCHAR(70) NOT NULL UNIQUE,
+primary key(`id`)
+)ENGINE=INNODB DEFAULT CHARACTER SET utf8;
+
+USE `rest-api-advanced`;
+drop table if exists `orders`;
+CREATE TABLE `orders`(
+`id` INTEGER NOT NULL auto_increment,
+`price` DECIMAL(8, 2) UNSIGNED NOT NULL,
+`purchase_time` timestamp(3) NOT NULL,
+`user_id` INTEGER NOT NULL,
+primary key(`id`),
+CONSTRAINT `fk_order_user_id` foreign key(`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE=INNODB DEFAULT CHARACTER SET utf8;
+
+
+USE `rest-api-advanced`;
+create table `order_certificates` (
+`id` integer NOT NULL auto_increment,
+`order_id` INTEGER NOT NULL,
+`gift_certificate_id` INTEGER NOT NULL,
+primary key(`id`),
+CONSTRAINT `fk_order_id` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT `fk_order_gift_certificate_id` FOREIGN KEY (`gift_certificate_id`) REFERENCES `gift_certificates` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=INNODB DEFAULT CHARACTER SET utf8;
+
+
+
+use `rest-api-advanced`;
+INSERT INTO `tags` (`id`, `name`) VALUES('1','warm');
+INSERT INTO `tags` (`id`, `name`) VALUES('2','kitchen');
+INSERT INTO `tags` (`id`, `name`) VALUES('3','house');
+INSERT INTO `tags` (`id`, `name`) VALUES('4','drink');
+INSERT INTO `tags` (`id`, `name`) VALUES('5','fresh');
+INSERT INTO `tags` (`id`, `name`) VALUES('6','fruit');
+INSERT INTO `tags` (`id`, `name`) VALUES('7','play');
+INSERT INTO `tags` (`id`, `name`) VALUES('8','show');
+INSERT INTO `tags` (`id`, `name`) VALUES('9','discounted');
+INSERT INTO `tags` (`id`, `name`) VALUES('10','smell');
+INSERT INTO `tags` (`id`, `name`) VALUES('11','cook');
+INSERT INTO `tags` (`id`, `name`) VALUES('12','technology');
+INSERT INTO `tags` (`id`, `name`) VALUES('13','clean');
+INSERT INTO `tags` (`id`, `name`) VALUES('14','style');
+
+INSERT INTO `gift_certificates` (`id`, `name`, `description`, `price`, `duration`, `create_date`, `last_update_date`)
+VALUES(1, 'Sticker', 'this is something that you use to stick some items', '23.4', 100, '2022-04-04T11:47:10.145', '2022-10-05T14:43:00.830');
+
+INSERT INTO `gift_certificates` (`id`, `name`, `description`, `price`, `duration`, `create_date`, `last_update_date`)
+VALUES(2, 'Towel', 'a piece of thick absorbent cloth or paper used for drying oneself or wiping things dr', '2.35', 300, '2012-01-29T16:30:21.211', '2020-05-05T23:42:12.112');
+
+INSERT INTO `gift_certificates` (`id`, `name`, `description`, `price`, `duration`, `create_date`, `last_update_date`)
+VALUES(3, 'Hoe', 'a long-handled gardening tool with a thin metal blade, used mainly for weeding', '223.4', 365, '2021-05-10T08:42:10.145', '2021-10-10T09:20:11.145');
+
+INSERT INTO `gift_certificates` (`id`, `name`, `description`, `price`, `duration`, `create_date`, `last_update_date`)
+VALUES(4, 'MacBook Pro', 'The MacBook is a line of Macintosh laptop computers designed by Apple', '2452.12', 1000, '2016-01-29T16:30:21.211', '2017-02-24T16:30:22.543');
+
+INSERT INTO `gift_certificates` (`id`, `name`, `description`, `price`, `duration`, `create_date`, `last_update_date`)
+VALUES(5, 'TV show', 'A television show – or simply TV show – is any content produced for viewing on a television set which can be broadcast via over-the-air', '1.45', 30, '2019-11-19T11:10:11.111', '2020-02-12T19:21:15.161');
+
+INSERT INTO `gift_certificates` (`id`, `name`, `description`, `price`, `duration`, `create_date`, `last_update_date`)
+VALUES(6, 'Toaster', 'A toaster is a common small electric appliance designed to expose various types of sliced bread to radiant heat, browning the bread so it becomes toast', '120.8', 200, '2018-09-18T19:30:21.211', '2018-11-19T16:21:28.543');
+
+INSERT INTO `gift_certificates` (`id`, `name`, `description`, `price`, `duration`, `create_date`, `last_update_date`)
+VALUES(7, 'Table', 'a piece of furniture with a flat top and one or more legs, providing a level surface for eating, writing, or working at', '15.5', 900, '2020-10-10T08:42:10.145', '2020-11-10T09:20:11.980');
+
+INSERT INTO `gift_certificates` (`id`, `name`, `description`, `price`, `duration`, `create_date`, `last_update_date`)
+VALUES(8, 'Banana', 'a  long curved fruit which grows in clusters and has soft pulpy flesh and yellow skin when rip', '1.9', 14, '2020-01-11T18:49:11.900', '2020-10-23T02:20:13.145');
+
+INSERT INTO `gift_certificates` (`id`, `name`, `description`, `price`, `duration`, `create_date`, `last_update_date`)
+VALUES(9, 'Flower', 'A flower, sometimes known as a bloom or blossom, is the reproductive structure found in flowering plants ', '13.5', 10, '2021-11-28T08:42:10.145', '2021-12-19T09:20:11.145');
+
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (1, 1, 2);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (2, 1, 7);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (3, 1, 14);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (4, 2, 11);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (5, 2, 2);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (6, 3, 3);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (7, 3, 12);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (8, 4, 14);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (9, 4, 5);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (10, 4, 9);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (11, 4, 12);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (12, 5, 1);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (13, 5, 14);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (14, 5, 8);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (15, 6, 11);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (16, 6, 10);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (17, 6, 4);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (18, 7, 13);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (19, 7, 14);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (20, 7, 3);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (21, 7, 11);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (22, 8, 2);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (23, 8, 10);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (24, 8, 5);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (25, 8, 6);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (26, 9, 10);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (27, 9, 14);
+INSERT INTO `gift_certificates_tags` (`id`, `gift_certificate_id`, `tag_id`) VALUES (28, 9, 5);
+
+
+use `rest-api-advanced`;
+INSERT INTO `users` VALUES ('2', 'Leonel Messi');
+INSERT INTO `users` VALUES ('3', 'Mohamed Salah');
+INSERT INTO `users` VALUES ('4', 'Islam Makhachev');
+INSERT INTO `users` VALUES ('5', 'Rishod Sobirov');
+INSERT INTO `users` VALUES ('6', 'Khabib Abdullayev');
+INSERT INTO `users` VALUES ('7', 'Cristiano Ronaldo');
+INSERT INTO `users` VALUES ('8', 'David Beckham');
+
+use `rest-api-advanced`;
+INSERT INTO `orders` VALUES('1', '542.4', now(), 2);
+INSERT INTO `orders` VALUES('2', '230.1', now(), 4);
+INSERT INTO `orders` VALUES('3', '390.2', now(), 8);
+INSERT INTO `orders` VALUES('4', '670.5', now(), 6);
+INSERT INTO `orders` VALUES('5', '100.0', now(), 8);
+INSERT INTO `orders` VALUES('6', '980.45', now(), 6);
+
+INSERT INTO `order_certificates` VALUES(1, 1, 3);
+INSERT INTO `order_certificates` VALUES(2, 1, 6);
+INSERT INTO `order_certificates` VALUES(3, 1, 8);
+INSERT INTO `order_certificates` VALUES(4, 2, 1);
+INSERT INTO `order_certificates` VALUES(5, 2, 7);
+INSERT INTO `order_certificates` VALUES(6, 2, 4);
+INSERT INTO `order_certificates` VALUES(7, 3, 2);
+INSERT INTO `order_certificates` VALUES(8, 3, 8);
+INSERT INTO `order_certificates` VALUES(9, 3, 9);
+INSERT INTO `order_certificates` VALUES(10, 4, 3);
+INSERT INTO `order_certificates` VALUES(11, 4, 5);
+INSERT INTO `order_certificates` VALUES(12, 4, 6);
+INSERT INTO `order_certificates` VALUES(13, 4, 1);
+INSERT INTO `order_certificates` VALUES(14, 4, 8);
+INSERT INTO `order_certificates` VALUES(15, 5, 5);
+INSERT INTO `order_certificates` VALUES(16, 5, 6);
+INSERT INTO `order_certificates` VALUES(17, 6, 3);
+INSERT INTO `order_certificates` VALUES(18, 6, 4);
+INSERT INTO `order_certificates` VALUES(19, 6, 5);
+INSERT INTO `order_certificates` VALUES(20, 6, 7);
+INSERT INTO `order_certificates` VALUES(21, 6, 8);
